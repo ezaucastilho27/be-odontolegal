@@ -172,6 +172,24 @@ Segurança: Garanta que senhas sejam criptografadas com bcrypt antes de salvar n
 
 Se precisar de mais detalhes ou ajuda com o código, é só dizer! 🚀
 
+create database odontolegal; 
+use odontolegal;
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,            -- Identificador único do usuário
+    nome VARCHAR(255) NOT NULL,                   -- Nome completo
+    email VARCHAR(255) NOT NULL UNIQUE,           -- E-mail único
+    senha VARCHAR(255) NOT NULL,                  -- Senha criptografada para acesso
+    tipo_usuario ENUM('admin', 'funcionario') NOT NULL, -- Tipo de usuário: 'admin' ou 'funcionario'
+    token VARCHAR(255),                           -- Token para validação de e-mail (apenas para funcionários)
+    usuario_desejado VARCHAR(50),                 -- Nome de usuário desejado (apenas para funcionários)
+    cpf VARCHAR(14) UNIQUE,                       -- CPF único (apenas para funcionários)
+    endereco TEXT,                                -- Endereço completo (apenas para funcionários)
+    status_aprovacao ENUM('pendente', 'aprovado', 'rejeitado') DEFAULT 'pendente', -- Status de aprovação (apenas para funcionários)
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Data e hora de criação do registro
+    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Última atualização do registro
+);
+
 
 
 
