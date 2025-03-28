@@ -1,10 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const connectDB = require('./config/db'); // Importa a configuração do banco
+const bodyParser = require('body-parser'); // Não esqueça de importar o body-parser
+const sequelize = require('../config/database'); // Certifique-se que o caminho está correto
 const adminRoutes = require('./routes/adminRoutes');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const registerRoutes = require('./routes/registerRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 
 // Configuração do app
 const app = express();
@@ -13,13 +12,19 @@ const PORT = process.env.PORT || 3000;
 // Middleware para parsing de JSON
 app.use(bodyParser.json());
 
-// Conexão com o MongoDB
-connectDB(); // Conecta ao banco
+// Conectar ao banco de dados com o Sequelize
+sequelize.authenticate()
+  .then(() => {
+    console.log('Conexão com o banco de dados estabelecida com sucesso.');
+  })
+  .catch(err => {
+    console.error('Erro ao conectar com o banco de dados:', err);
+  });
 
 // Rotas
 app.use('/api/admin', adminRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/register', registerRoutes);
+app.use('/api/usuario', usuarioRoutes);
 
 // Rota inicial
 app.get('/', (req, res) => {
